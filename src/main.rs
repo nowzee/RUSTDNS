@@ -13,8 +13,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     info!("Starting DNS server...");
 
     let addr = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(192, 168, 1, 132)), 53);
-
     let socket = Arc::new(UdpSocket::bind(addr).await?);
+    
     info!("DNS server listening on {}", addr);
 
     loop {
@@ -48,13 +48,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             if request.message_type() != MessageType::Query {
                 return;
             }
+            
 
-
+            
             for query in request.queries() {
                 let domain = str::trim_end_matches(&query.name().to_string(), '.').to_string();
-
+                
                 if domain == "example.com" {  // ban a specific domain
-                    println!("{}", domain);
+                    println!("IP SOURCE: {}", src);
+                    println!("Domain blocked : {}", domain);
                 } else {
                     let mut response = Message::new();
                     response.set_id(request.id());
