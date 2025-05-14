@@ -53,7 +53,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             for query in request.queries() {
                 let domain = str::trim_end_matches(&query.name().to_string(), '.').to_string();
 
-                if domain == "example.com" {  // bans a specific domain
+                if domain == "example.com" {  // ban a specific domain
                     println!("{}", domain);
                 } else {
                     let mut response = Message::new();
